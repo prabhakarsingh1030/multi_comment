@@ -173,13 +173,26 @@
         </form>
         <div id="comments"> 
           <ul class="posts">
-          @foreach($comment as $com)
+          @foreach($nestedComments as $com)
 
-          <li class="commentID-{{$com->id}} comment" data-commentId="{{$com->id}}">{{$com->content}} {{$com->id}} </li>
-          <span class="reply-{{$com->id}} reply" data-id="{{$data['id']}}" data-comment-id ="{{$com->id}}" >reply</span>
+          <li class="commentID-{{$com['comment']->id}} comment" data-commentId="{{$com['comment']->id}}">{{$com['comment']->content}} {{$com['comment']->id}} </li>
+          <span class="reply-{{$com['comment']->id}} reply" data-id="{{$data['id']}}" data-comment-id ="{{$com['comment']->id}}" >reply</span>
+
+
+          @if (!empty($com['replies']))
+            <div class="replies">
+                @foreach ($com['replies'] as $reply)
+                    <div class="reply">
+                        <li class="form-control" style="margin-left: 60%;width:39%">{{ $reply->content }}</li>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
 
           @endforeach
         </ul>
+
       </div>
        
         <ul class="reply-more">
