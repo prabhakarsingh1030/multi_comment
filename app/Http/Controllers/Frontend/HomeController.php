@@ -27,22 +27,30 @@ class HomeController extends Controller
         ->get();
 
     
-        $nestedComments = [];
-        foreach ($commentnew as $comment) {
-            if ($comment->parent_comment_id === null) {
-                // Parent comment
-                $nestedComments[$comment->id] = [
-                    'comment' => $comment,
-                    'replies' => []
-                ];
-            } else {
-                // Reply to a parent comment
-                $nestedComments[$comment->parent_comment_id]['replies'][] = $comment;
+        function buildNestedComments($comments, $parentId = null) {
+            $nestedComments = [];
+        
+            foreach ($comments as $comment) {
+                // Check if this comment belongs under the current parent
+                if ($comment->parent_comment_id === $parentId) {
+                    // Recursively build the replies for this comment
+                    $nestedComments[] = [
+                        'comment' => $comment,
+                        'replies' => buildNestedComments($comments, $comment->id)
+                    ];
+                }
             }
+        
+            return $nestedComments;
         }
+        
+        // Call the function with the top-level comments
+        $nestedComments = buildNestedComments($commentnew);
+        
 
         
-        // dd($nestedComments);
+        // return response()->json(['data'=>$nestedComments]);
+        // exit();
 
         // dd($nestedComments);
         if ($data) {
