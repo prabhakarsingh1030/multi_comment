@@ -26,7 +26,7 @@ class HomeController extends Controller
         ->where('post_id', $id) // Filter by the specific post ID
         ->get();
 
-
+    
         $nestedComments = [];
         foreach ($commentnew as $comment) {
             if ($comment->parent_comment_id === null) {
@@ -42,7 +42,7 @@ class HomeController extends Controller
         }
 
         
-
+        // dd($nestedComments);
 
         // dd($nestedComments);
         if ($data) {

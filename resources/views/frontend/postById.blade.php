@@ -171,30 +171,31 @@
             <input class="mt-2" type="submit" value="submit">
           </div>
         </form>
-        <div id="comments"> 
+        <div id="comments">
           <ul class="posts">
-          @foreach($nestedComments as $com)
+            @foreach($nestedComments as $com)
 
-          <li class="commentID-{{$com['comment']->id}} comment" data-commentId="{{$com['comment']->id}}">{{$com['comment']->content}} {{$com['comment']->id}} </li>
-          <span class="reply-{{$com['comment']->id}} reply" data-id="{{$data['id']}}" data-comment-id ="{{$com['comment']->id}}" >reply</span>
+            <li class="commentID-{{$com['comment']->id}} comment" data-commentId="{{$com['comment']->id}}" style="background-color:orange">{{$com['comment']->content}} {{$com['comment']->id}} </li>
+            <span class="reply-{{$com['comment']->id}} reply" data-id="{{$data['id']}}" data-comment-id="{{$com['comment']->id}}" data-depth="{{$com['comment']->depth}}">Reply</span>
 
 
-          @if (!empty($com['replies']))
+            @if (!empty($com['replies']))
             <div class="replies">
-                @foreach ($com['replies'] as $reply)
-                    <div class="reply">
-                        <li class="form-control" style="margin-left: 60%;width:39%">{{ $reply->content }}</li>
-                    </div>
-                @endforeach
+              @foreach ($com['replies'] as $reply)
+              <div class="re" style="display: flex; align-items: center; gap: 10px;">
+                <li class="form-control" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;">{{ $reply->content }}</li>
+                <button class="btn-sm btn-info replyBtn" data-post-id ="{{$reply->post_id}}" data-parent-comment-id="{{$reply->parent_comment_id}}" data-depth="{{$reply->depth}}">Reply</button>
+              </div>
+              @endforeach
             </div>
-        @endif
+            @endif
 
 
-          @endforeach
-        </ul>
+            @endforeach
+          </ul>
 
-      </div>
-       
+        </div>
+
         <ul class="reply-more">
 
         </ul>
@@ -211,22 +212,9 @@
       $('.btn').click(function() {
         var post = $('.status-box').val();
         $('<li>').text(post).prependTo('.posts');
-        $('.status-box').val('');
-        $('.counter').text('250');
-        $('.btn').addClass('disabled');
+      
       });
-      $('.status-box').keyup(function() {
-        var postLength = $(this).val().length;
-        var charactersLeft = 250 - postLength;
-        $('.counter').text(charactersLeft);
-        if (charactersLeft < 0) {
-          $('.btn').addClass('disabled');
-        } else if (charactersLeft === 250) {
-          $('.btn').addClass('disabled');
-        } else {
-          $('.btn').removeClass('disabled');
-        }
-      });
+    
     }
     $('.btn').addClass('disabled');
     $(document).ready(main)
@@ -234,30 +222,41 @@
 
 
 
-    $('#comments').on('click','.reply',function() {
+    $('#comments').on('click', '.reply', function() {
       const commentDiv = $(this).closest('.comment');
       const post_id = $(this).data('id');
       const parent_comment_id = $(this).data('comment-id');
+ const depth = $(this).data('depth');
+
+      console.log(parent_comment_id);
+      // console.log(parent_comment_id);
+
+
+      $('.reply-more').append(`<div><form action="{{route('reply.store')}}" method="POST">@csrf <input type="hidden" value="${post_id}" name="post_id"><input type="hidden" name="parent_comment_id" value="${parent_comment_id}"> <input type="hidden" name="depth" value="${depth}"><input type="text" class="dynamic-input" name="content" placeholder="Enter text here"><br><input type="submit" value="submit"></form></div>`);
       
+    });
 
-console.log(parent_comment_id);
-// console.log(parent_comment_id);
-     
+    // reply form append
 
-$('.reply-more').append(`<div><form action="{{route('reply.store')}}" method="POST">@csrf <input type="hidden" value="${post_id}" name="post_id"> <input type="hidden" name="parent_comment_id" value="${parent_comment_id}"> <input type="text" class="dynamic-input" name="content" placeholder="Enter text here"><br><input type="submit" value="submit"></form></div>`);
-      // if (commentDiv.find('.reply-box').length === 0) {
-      //   // Create and append the reply input box
-      //   const replyBox = `
-      //   <div class="reply-box">
-      //       <input type="text" class="reply-input" placeholder="Write your reply..." />
-      //       <button class="submit-reply">Submit</button>
-      //   </div>`;
-      //   commentDiv.append(replyBox);
-      // }
+
+    $('.replyBtn').on('click', function(e) {
+  //  alert();
+      e.preventDefault();
+      const repost_id = $(this).data('post-id');
+      const reparent_comment_id = $(this).data('parent-comment-id');
+      const depth = $(this).data('depth');
+
+
+      console.log(reparent_comment_id,repost_id);
+      console.log();
+
+
+      $('.reply-more').append(`<div><form action="{{route('reply.store')}}" method="POST">@csrf <input type="hidden" value="${repost_id}" name="post_id"> <input type="hidden" name="parent_comment_id" value="${reparent_comment_id}"> <input type="hidden" name="depth" value="${depth}"><input type="text" class="dynamic-input" name="content" placeholder="Enter text here"><br><input type="submit" value="submit"></form></div>`);
+      
     });
 
 
-    
+
   });
 </script>
 
