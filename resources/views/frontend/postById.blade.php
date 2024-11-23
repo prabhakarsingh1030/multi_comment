@@ -124,7 +124,28 @@
 </head>
 
 <body>
-
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="url('/')">Add Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url('frontend/homepage')}}">All Post</a>
+                    </li>
+                    
+                   
+                   
+                </ul>
+               
+            </div>
+        </div>
+    </nav>
 
 
   <div class="container">
@@ -186,13 +207,8 @@
                 <li class="form-control" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;">{{ $reply['comment']->content }}</li>
                 <button class="btn-sm btn-info replyBtn" data-post-id ="{{$reply['comment']->post_id}}" data-parent-comment-id="{{$reply['comment']->id}}" data-depth="{{$reply['comment']->depth}}">Reply</button>
               </div>
-              @endforeach
-            </div>
-            @endif
 
-            @if(!empty($reply['replies']))
-
-            <div class="replies">
+              <div class="replies">
               @foreach($reply['replies'] as $lastcomment)
               <div class="re" style="display: flex; align-items: center; gap: 10px;">
                 <li class="form-control" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;">{{ $lastcomment['comment']->content }}</li>
@@ -200,7 +216,15 @@
               </div>
               @endforeach
             </div>
+
+              @endforeach
+            </div>
             @endif
+
+     
+
+         
+       
             @endforeach
           </ul>
 
@@ -222,9 +246,22 @@
       $('.btn').click(function() {
         var post = $('.status-box').val();
         $('<li>').text(post).prependTo('.posts');
-      
+        $('.status-box').val('');
+        $('.counter').text('250');
+        $('.btn').addClass('disabled');
       });
-    
+      $('.status-box').keyup(function() {
+        var postLength = $(this).val().length;
+        var charactersLeft = 250 - postLength;
+        $('.counter').text(charactersLeft);
+        if (charactersLeft < 0) {
+          $('.btn').addClass('disabled');
+        } else if (charactersLeft === 250) {
+          $('.btn').addClass('disabled');
+        } else {
+          $('.btn').removeClass('disabled');
+        }
+      });
     }
     $('.btn').addClass('disabled');
     $(document).ready(main)
