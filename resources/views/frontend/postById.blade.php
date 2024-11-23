@@ -197,22 +197,23 @@
             @foreach($nestedComments as $com)
 
             <li class="commentID-{{$com['comment']->id}} comment" data-commentId="{{$com['comment']->id}}" style="background-color:orange">{{$com['comment']->content}} {{$com['comment']->id}} </li>
-            <span class="reply-{{$com['comment']->id}} reply" data-id="{{$data['id']}}" data-comment-id="{{$com['comment']->id}}" data-depth="{{$com['comment']->depth}}">Reply</span>
+            
+            <span class="reply-{{$com['comment']->id}} reply firstcommentbutton" data-id="{{$data['id']}}" data-comment-id="{{$com['comment']->id}}" data-depth="{{$com['comment']->depth}}">Reply</span>
 
 
             @if (!empty($com['replies']))
             <div class="replies">
               @foreach ($com['replies'] as $reply)
               <div class="re" style="display: flex; align-items: center; gap: 10px;">
-                <li class="form-control" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;">{{ $reply['comment']->content }}</li>
+                <li class="form-control secondreply" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;" data-depth="{{$reply['comment']->depth}}">{{ $reply['comment']->content }}</li>
                 <button class="btn-sm btn-info replyBtn" data-post-id ="{{$reply['comment']->post_id}}" data-parent-comment-id="{{$reply['comment']->id}}" data-depth="{{$reply['comment']->depth}}">Reply</button>
               </div>
 
               <div class="replies">
               @foreach($reply['replies'] as $lastcomment)
               <div class="re" style="display: flex; align-items: center; gap: 10px;">
-                <li class="form-control" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;">{{ $lastcomment['comment']->content }}</li>
-                <button class="btn-sm btn-info replyBtn" data-post-id ="{{$lastcomment['comment']->post_id}}" data-parent-comment-id="{{$lastcomment['comment']->id}}" data-depth="{{$lastcomment['comment']->depth}}">Reply</button>
+                <li class="form-control lastreply" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;" data-depth="{{$lastcomment['comment']->depth}}">{{ $lastcomment['comment']->content }}</li>
+                <!-- <button class="btn-sm btn-info replyBtn" data-post-id ="{{$lastcomment['comment']->post_id}}" data-parent-comment-id="{{$lastcomment['comment']->id}}" data-depth="{{$lastcomment['comment']->depth}}">Reply</button> -->
               </div>
               @endforeach
             </div>
@@ -275,13 +276,27 @@
       const parent_comment_id = $(this).data('comment-id');
       const depth = $(this).data('depth');
 
+      // $('.firstcommentbutton').hide();
+
       console.log(parent_comment_id);
       // console.log(parent_comment_id);
 
 
-      $('.reply-more').append(`<div><form action="{{route('reply.store')}}" method="POST">@csrf <input type="hidden" value="${post_id}" name="post_id"><input type="hidden" name="parent_comment_id" value="${parent_comment_id}"> <input type="hidden" name="depth" value="${depth}"><input type="text" class="dynamic-input" name="content" placeholder="Enter text here"><br><input type="submit" value="submit"></form></div>`);
+      $('.reply-more').append(`
+      <div>
+      <form action="{{route('reply.store')}}" method="POST">
+      @csrf 
+      <input type="hidden" value="${post_id}" name="post_id">
+      <input type="hidden" name="parent_comment_id" value="${parent_comment_id}"> 
+      <input type="hidden" name="depth" value="${depth}">
+      <input type="text" class="dynamic-input" name="content" placeholder="Enter text here">
+      <br>
+      <input type="submit" value="submit">
+      </form>
+      </div>`);
       
     });
+    
 
     // reply form append
 
@@ -299,7 +314,18 @@
       // console.log();
 
 
-      $('.reply-more').append(`<div><form action="{{route('reply.store')}}" method="POST">@csrf <input type="hidden" value="${repost_id}" name="post_id"> <input type="hidden" name="parent_comment_id" value="${reparent_comment_id}"> <input type="hidden" name="depth" value="${depth}"><input type="text" class="dynamic-input" name="content" placeholder="Enter text here"><br><input type="submit" value="submit"></form></div>`);
+      $('.reply-more').append(`
+      <div>
+      <form action="{{route('reply.store')}}" method="POST">
+      @csrf 
+      <input type="hidden" value="${repost_id}" name="post_id">
+       <input type="hidden" name="parent_comment_id" value="${reparent_comment_id}">
+        <input type="hidden" name="depth" value="${depth}">
+        <input type="text" class="dynamic-input" name="content" placeholder="Enter text here">
+        <br>
+        <input type="submit" value="submit">
+        </form>
+        </div>`);
       
     });
 
