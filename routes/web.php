@@ -33,6 +33,7 @@ Route::post('/post_store',[PostController::class,'store'])->name('post.store');
 
 Route::get('frontend/homepage',[HomeController::class,'index']);
 Route::get('frontend/homepageByid/{id}',[HomeController::class,'postById'])->name('homepage.postById');
+Route::get('postbyid/{id}',[HomeController::class,'postbyid']);
 
 
 // comment

@@ -124,28 +124,28 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="url('/')">Add Post</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{url('frontend/homepage')}}">All Post</a>
-                    </li>
-                    
-                   
-                   
-                </ul>
-               
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="url('/')">Add Post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{url('frontend/homepage')}}">All Post</a>
+          </li>
+
+
+
+        </ul>
+
+      </div>
+    </div>
+  </nav>
 
 
   <div class="container">
@@ -197,35 +197,43 @@
             @foreach($nestedComments as $com)
 
             <li class="commentID-{{$com['comment']->id}} comment" data-commentId="{{$com['comment']->id}}" style="background-color:orange">{{$com['comment']->content}} {{$com['comment']->id}} </li>
-            
-            <span class="reply-{{$com['comment']->id}} reply firstcommentbutton" data-id="{{$data['id']}}" data-comment-id="{{$com['comment']->id}}" data-depth="{{$com['comment']->depth}}">Reply</span>
 
+            @if (!empty($com['replies']))
+
+            @else
+            <span class="reply-{{$com['comment']->id}} reply firstcommentbutton" data-id="{{$data['id']}}" data-comment-id="{{$com['comment']->id}}" data-depth="{{$com['comment']->depth}}">Reply</span>
+            @endif
 
             @if (!empty($com['replies']))
             <div class="replies">
               @foreach ($com['replies'] as $reply)
               <div class="re" style="display: flex; align-items: center; gap: 10px;">
                 <li class="form-control secondreply" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;" data-depth="{{$reply['comment']->depth}}">{{ $reply['comment']->content }}</li>
-                <button class="btn-sm btn-info replyBtn" data-post-id ="{{$reply['comment']->post_id}}" data-parent-comment-id="{{$reply['comment']->id}}" data-depth="{{$reply['comment']->depth}}">Reply</button>
+
+                @if(!empty($reply['replies']))
+                
+                @else
+                <button class="btn-sm btn-info replyBtn" data-post-id="{{$reply['comment']->post_id}}" data-parent-comment-id="{{$reply['comment']->id}}" data-depth="{{$reply['comment']->depth}}">Reply</button>
+                @endif
               </div>
 
               <div class="replies">
-              @foreach($reply['replies'] as $lastcomment)
-              <div class="re" style="display: flex; align-items: center; gap: 10px;">
-                <li class="form-control lastreply" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;" data-depth="{{$lastcomment['comment']->depth}}">{{ $lastcomment['comment']->content }}</li>
-                <!-- <button class="btn-sm btn-info replyBtn" data-post-id ="{{$lastcomment['comment']->post_id}}" data-parent-comment-id="{{$lastcomment['comment']->id}}" data-depth="{{$lastcomment['comment']->depth}}">Reply</button> -->
+                @foreach($reply['replies'] as $lastcomment)
+                <div class="re" style="display: flex; align-items: center; gap: 10px;">
+                  <li class="form-control lastreply" style="margin-left: 11%;width:85%;background-color:lightgreen;list-style:none;" data-depth="{{$lastcomment['comment']->depth}}">{{ $lastcomment['comment']->content }}</li>
+                  <!-- <button class="btn-sm btn-info replyBtn" data-post-id ="{{$lastcomment['comment']->post_id}}" data-parent-comment-id="{{$lastcomment['comment']->id}}" data-depth="{{$lastcomment['comment']->depth}}">Reply</button> -->
+                </div>
+                @endforeach
               </div>
-              @endforeach
-            </div>
 
               @endforeach
             </div>
             @endif
 
-     
 
-         
-       
+
+
+
             @endforeach
           </ul>
 
@@ -282,6 +290,7 @@
       // console.log(parent_comment_id);
 
 
+
       $('.reply-more').append(`
       <div>
       <form action="{{route('reply.store')}}" method="POST">
@@ -294,21 +303,21 @@
       <input type="submit" value="submit">
       </form>
       </div>`);
-      
+
     });
-    
+
 
     // reply form append
 
 
     $('.replyBtn').on('click', function(e) {
-  //  alert();
+      //  alert();
       e.preventDefault();
       const repost_id = $(this).data('post-id');
       const reparent_comment_id = $(this).data('parent-comment-id');
       const depth = $(this).data('depth');
 
-    
+
 
       // console.log(reparent_comment_id,repost_id);
       // console.log();
@@ -326,7 +335,7 @@
         <input type="submit" value="submit">
         </form>
         </div>`);
-      
+
     });
 
 
