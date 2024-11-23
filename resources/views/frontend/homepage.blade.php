@@ -91,7 +91,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="url('/')">Add Post</a>
+                        <a class="nav-link active" aria-current="page" href="{{url('/')}}">Add Post</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{url('frontend/homepage')}}">All Post</a>
@@ -129,9 +129,7 @@
 
       </div>
 
-      <div class="footer">
-        <h2>Footer</h2>
-      </div>
+     
     </div>
   </div>
 

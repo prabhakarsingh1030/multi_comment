@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('comments:delete-empty')->everyMinute()->runInBackground();
     }
 
     /**
@@ -29,4 +29,10 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
+
+
+
+    protected $commands = [
+        \App\Console\Commands\DeleteEmptyComments::class,
+    ];
 }
