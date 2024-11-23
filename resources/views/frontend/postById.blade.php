@@ -120,6 +120,9 @@
       background-color: #337ab7;
       border-color: #2e6da4;
     }
+    .clickable {
+    cursor: pointer;
+}
   </style>
 </head>
 
@@ -201,7 +204,7 @@
             @if (!empty($com['replies']))
 
             @else
-            <span class="reply-{{$com['comment']->id}} reply firstcommentbutton" data-id="{{$data['id']}}" data-comment-id="{{$com['comment']->id}}" data-depth="{{$com['comment']->depth}}">Reply</span>
+            <button class="reply-{{$com['comment']->id}} reply firstcommentbutton clickable " data-id="{{$data['id']}}" data-comment-id="{{$com['comment']->id}}" data-depth="{{$com['comment']->depth}}">Reply</button>
             @endif
 
             @if (!empty($com['replies']))
@@ -298,9 +301,9 @@
       <input type="hidden" value="${post_id}" name="post_id">
       <input type="hidden" name="parent_comment_id" value="${parent_comment_id}"> 
       <input type="hidden" name="depth" value="${depth}">
-      <input type="text" class="dynamic-input" name="content" placeholder="Enter text here">
+      <input type="text" class="dynamic-input form-control" name="content" placeholder="Enter text here">
       <br>
-      <input type="submit" value="submit">
+      <input class="btn btn-sm btn-primary" type="submit" value="submit">
       </form>
       </div>`);
 
@@ -330,9 +333,9 @@
       <input type="hidden" value="${repost_id}" name="post_id">
        <input type="hidden" name="parent_comment_id" value="${reparent_comment_id}">
         <input type="hidden" name="depth" value="${depth}">
-        <input type="text" class="dynamic-input" name="content" placeholder="Enter text here">
+        <input type="text" class="dynamic-input form-control" name="content" placeholder="Enter text here">
         <br>
-        <input type="submit" value="submit">
+        <input  type="submit" value="submit">
         </form>
         </div>`);
 
