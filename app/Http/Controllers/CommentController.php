@@ -56,6 +56,14 @@ class CommentController extends Controller
     {
         // dd($request->all());
 
+        $validate = $request->validate([
+
+            'post_id' =>'required',
+            'content'=>'required',
+            'parent_comment_id'=>'required',
+            'depth'=>'required|max:3'
+        ]);
+
 
         $reply = DB::table('comments')->insert([
             'post_id' => $request->post_id,
