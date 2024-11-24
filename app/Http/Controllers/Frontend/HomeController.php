@@ -31,9 +31,9 @@ class HomeController extends Controller
             $nestedComments = [];
         
             foreach ($comments as $comment) {
-                // Check if this comment belongs under the current parent
+              
                 if ($comment->parent_comment_id === $parentId) {
-                    // Recursively build the replies for this comment
+                 
                     $nestedComments[] = [
                         'comment' => $comment,
                         'replies' => buildNestedComments($comments, $comment->id)
@@ -44,7 +44,6 @@ class HomeController extends Controller
             return $nestedComments;
         }
         
-        // Call the function with the top-level comments
         $nestedComments = buildNestedComments($commentnew);
         
 
@@ -62,7 +61,7 @@ class HomeController extends Controller
 
 
 
-    //  for only test 
+    //  for only test  api
 
     public  function getbyid($id){
 
@@ -78,9 +77,9 @@ class HomeController extends Controller
             $nestedComments = [];
         
             foreach ($comments as $comment) {
-                // Check if this comment belongs under the current parent
+                
                 if ($comment->parent_comment_id === $parentId) {
-                    // Recursively build the replies for this comment
+                 
                     $nestedComments[] = [
                         'comment' => $comment,
                         'replies' => NestedComments($comments, $comment->id)
@@ -91,7 +90,6 @@ class HomeController extends Controller
             return $nestedComments;
         }
         
-        // Call the function with the top-level comments
         $nestedComments = NestedComments($commentnew);
         
 

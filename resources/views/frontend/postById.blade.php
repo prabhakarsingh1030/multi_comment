@@ -185,8 +185,7 @@
           <input type="hidden" name="post_id" value="{{$data['id']}}">
           <div class="form-group">
             <!-- <textarea class="form-control status-box" rows="3" name="content" placeholder="Enter your comment here..."></textarea> -->
-            <textarea class="form-control status-box" type="text" name="content">
-             </textarea>
+            <textarea class="form-control status-box" type="text" name="content" placeholder="Enter your comment here..."></textarea>
           </div>
 
           <div class="button-group pull-right">

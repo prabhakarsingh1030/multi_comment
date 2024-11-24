@@ -7,6 +7,7 @@ Hiding All the buttons when depth level reaches 3.
 
 
 ###  Prerequisites
+Proper Internet To Download 
 PHP ^8.x
 Laravel ^9.x
 A database (MySQL)
@@ -58,7 +59,7 @@ http://127.0.0.1:8000/
 
 
 ### Things That i have used 
-1. I have Used laravel  blade template to display all the comments and replies.
+1. I have Used laravel  blade template to display all the comments and replies along with bootstrap cdn and Jquery to work with buttons.
 2. Used controller to restrict depth level. 
 3.  Used if's conditon to disable button on depth wise 
 4. I have used Color Combination to display comments and theirs replies to differentaite.
