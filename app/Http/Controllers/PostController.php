@@ -47,7 +47,7 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->content = $request->content;
         $post->save();
-        return redirect('/post')->with('msg','Content Added Successfully');
+        return redirect('/')->with('msg','Content Added Successfully');
 
     }
 
